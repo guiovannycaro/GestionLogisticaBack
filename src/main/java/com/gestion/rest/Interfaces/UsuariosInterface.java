@@ -9,7 +9,7 @@ public interface UsuariosInterface {
 
 	List<Usuarios> devolverListaUsuarios() throws Exception;
 
-	List<Usuarios> devolverUsuariosById(Usuarios u)  throws Exception;
+	public Usuarios devolverUsuariosById(Integer id) throws Exception;
 
 	Usuarios buscarUsuariosPorDato(Usuarios datos)  throws Exception;
 	 

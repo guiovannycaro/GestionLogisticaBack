@@ -43,12 +43,13 @@ public class UsuariosDao implements   UsuariosInterface{
 	
 	
 	@Override
-	public List<Usuarios> devolverUsuariosById(Usuarios u) throws Exception {
+	public Usuarios devolverUsuariosById(Integer id) throws Exception {
 		ArrayList<Usuarios> list = new ArrayList<>();
-		String sql = "select * from usuarios where usu_id = "+ u.getUSU_ID() +" ";
+		String sql = "select * from usuarios where usu_id = "+ id +" ";
 		resulSelect = query.executeSelectBd(sql);
+		Usuarios us = new Usuarios();
 		while (resulSelect.next()) {
-			Usuarios us = new Usuarios();
+			
 			us.setUSU_ID(resulSelect.getInt("usu_id"));
 			us.setUSU_NOMBRES(resulSelect.getString("usu_nombres"));
 			us.setUSU_DIRECCION(resulSelect.getString("usu_direccion"));
@@ -59,9 +60,9 @@ public class UsuariosDao implements   UsuariosInterface{
 			us.setUSU_TDOC_ID(resulSelect.getInt("usu_tdoc_id"));
 			us.setUSU_ROL_ID(resulSelect.getInt("usu_rol_id"));
 			us.setUSU_ESTADO(resulSelect.getInt("usu_estado"));
-			list.add(us);
+			
 		}
-		return list;
+		return us;
 	}
 
 	@Override
@@ -101,7 +102,7 @@ public class UsuariosDao implements   UsuariosInterface{
 				+ "usu_password = '" + usu.getUSU_PASSWORD() + "', "
 				+ "usu_tdoc_id = '" + usu.getUSU_TDOC_ID() + "', "
 				+ "usu_rol_id = '" + usu.getUSU_ROL_ID() + "', "
-						+ "usu_estado = '" + usu.getUSU_ESTADO() + "', "
+						+ "usu_estado = '" + usu.getUSU_ESTADO() + "' "
 				+ " WHERE usu_id = " + usu.getUSU_ID() + " ";
 		
 		boolean rpt = query.executeUpdateBd(sql);

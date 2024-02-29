@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.Collections;
 import com.gestion.rest.Model.Usuarios;
@@ -70,26 +71,21 @@ public class UserController {
 		@ApiResponse(code = 401, message = "No existen Datos Asociados a Ese Usuarios", response = Usuarios.class),
 		@ApiResponse(code = 404, message = "No existen Datos Asociados a Ese Usuarios", response = Usuarios.class), })
 	  @ApiImplicitParams({
-			@ApiImplicitParam(name = "Usuarios", required = true, paramType = "query", dataType = "Object", value = "Ojeto Usuarios", defaultValue = "{\r\n"
-					+ "\"\"USU_ID\":xxx,\r\n"
-					+ "\"USU_NOMBRES\": \"xxx\",\r\n"
-					+ "\"USU_DIRECCION\": \"xxx\",\r\n"
-					+ "\"USU_TELEFONO\":\"xxx\",\r\n"
-					+ "\"USU_CORREO\":\"xxxx\",\r\n"
-					+ "\"USU_NUMDOCUMENTO\":\"xxxx\",\r\n"
-					+ "\"USU_PASSWORD\":\"xxxx\",\r\n"
-					+ "\"USU_TDOC_ID\":\"xxxx\",\r\n"
-					+ "\"USU_ROL_ID\": xxx \r\n"
+			@ApiImplicitParam(name = "Usuarios", required = true, paramType = "query", dataType = "Object", value = "Ojeto Usuarios", defaultValue = 
+					"{\r\n"
+				    	+ "\"\"id\":xxx\r\n"
 					+ "}"), })
-	public List<Usuarios> ListarUsuariosById(
+	public Usuarios ListarUsuariosById(
 			 @ApiParam(name = "Usuarios", value = "Recibe el objeto Usuarios", required = true)
-			 @RequestBody Usuarios u) {
+			 @RequestParam Integer id) {
+			Usuarios u = null;
 		try {
+		
 			UsuariosDao servicioUsuarios = new UsuariosDao();
-			return servicioUsuarios.devolverUsuariosById(u);
+			return u = servicioUsuarios.devolverUsuariosById(id);
 		} catch (Exception e) {
 			log.error(ExceptionUtil.format(e));
-			return Collections.emptyList();
+			return u;
 		}
 	}
 	  
@@ -323,6 +319,32 @@ public class UserController {
 		}
 
 	  
+	  @GetMapping(value = "/EliminarUsuario", produces = MediaType.APPLICATION_JSON_VALUE)
+	 @ApiOperation(value = "Lista de Usuarios por Id ", response = Usuarios.class, notes = "Crea un nuevo telefono")
+	@ApiResponses({ @ApiResponse(code = 200, message = "Se crea  de manera correcta", response = Usuarios.class),
+		@ApiResponse(code = 400, message = "Bad Request.El Usuarios Ingresado Esta Mal Digitado(String)", response = Usuarios.class),
+		@ApiResponse(code = 500, message = "Error del sistema inesperado", response = Usuarios.class),
+		@ApiResponse(code = 403, message = "Acceso denegado", response = Usuarios.class),
+		@ApiResponse(code = 401, message = "No existen Datos Asociados a Ese Usuarios", response = Usuarios.class),
+		@ApiResponse(code = 404, message = "No existen Datos Asociados a Ese Usuarios", response = Usuarios.class), })
+	  @ApiImplicitParams({
+			@ApiImplicitParam(name = "Usuarios", required = true, paramType = "query", dataType = "Object", value = "Ojeto Usuarios", defaultValue = 
+					"{\r\n"
+				    	+ "\"\"id\":xxx\r\n"
+					+ "}"), })
+	public String EliminarUsuarioById(
+			 @ApiParam(name = "Usuarios", value = "Recibe el objeto Usuarios", required = true)
+			 @RequestParam Integer id) {
+			String u = null;
+		try {
+		
+			UsuariosDao servicioUsuarios = new UsuariosDao();
+			return u = servicioUsuarios.eliminarUsuario(id);
+		} catch (Exception e) {
+			log.error(ExceptionUtil.format(e));
+			return u;
+		}
+	}
 	  
 		
 	}
