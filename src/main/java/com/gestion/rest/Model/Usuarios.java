@@ -24,13 +24,14 @@ public class Usuarios {
 	Integer USU_TDOC_ID;
 	@ApiModelProperty(value = "USU_ROL_ID", required = true, dataType = "Integer", example = "0000", position = 9)
 	Integer USU_ROL_ID;
-	
+	@ApiModelProperty(value = "USU_ROL_ID", required = true, dataType = "Integer", example = "0000", position = 9)
+	Integer USU_ESTADO;
 	
 	public Usuarios() {
 	}
 
 	public Usuarios(Integer uSU_ID, String uSU_NOMBRES, String uSU_DIRECCION, String uSU_TELEFONO, String uSU_CORREO,
-			String uSU_NUMDOCUMENTO, String uSU_PASSWORD, Integer uSU_TDOC_ID, Integer uSU_ROL_ID) {
+			String uSU_NUMDOCUMENTO, String uSU_PASSWORD, Integer uSU_TDOC_ID, Integer uSU_ROL_ID, Integer USU_ESTADO) {
 		USU_ID = uSU_ID;
 		USU_NOMBRES = uSU_NOMBRES;
 		USU_DIRECCION = uSU_DIRECCION;
@@ -40,6 +41,7 @@ public class Usuarios {
 		USU_PASSWORD = uSU_PASSWORD;
 		USU_TDOC_ID = uSU_TDOC_ID;
 		USU_ROL_ID = uSU_ROL_ID;
+		USU_ROL_ID = USU_ESTADO;
 	}
 
 	public Integer getUSU_ID() {
@@ -114,12 +116,22 @@ public class Usuarios {
 		USU_ROL_ID = uSU_ROL_ID;
 	}
 
+	public Integer getUSU_ESTADO() {
+		return USU_ESTADO;
+	}
+
+	public void setUSU_ESTADO(Integer uSU_ESTADO) {
+		USU_ESTADO = uSU_ESTADO;
+	}
+
 	@Override
 	public String toString() {
 		return "Usuarios [USU_ID=" + USU_ID + ", USU_NOMBRES=" + USU_NOMBRES + ", USU_DIRECCION=" + USU_DIRECCION
 				+ ", USU_TELEFONO=" + USU_TELEFONO + ", USU_CORREO=" + USU_CORREO + ", USU_NUMDOCUMENTO="
 				+ USU_NUMDOCUMENTO + ", USU_PASSWORD=" + USU_PASSWORD + ", USU_TDOC_ID=" + USU_TDOC_ID + ", USU_ROL_ID="
-				+ USU_ROL_ID + "]";
+				+ USU_ROL_ID + ", USU_ESTADO=" + USU_ESTADO + "]";
 	}
+
+
 	
 }

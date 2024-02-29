@@ -114,7 +114,8 @@ public class UserController {
 					+ "\"USU_NUMDOCUMENTO\":\"xxxx\",\r\n"
 					+ "\"USU_PASSWORD\":\"xxxx\",\r\n"
 					+ "\"USU_TDOC_ID\":\"xxxx\",\r\n"
-					+ "\"USU_ROL_ID\": xxx \r\n"
+					+ "\"USU_ROL_ID\":\"xxxx\",\r\n"
+					+ "\"USU_ESTADO\": xxx \r\n"
 					+ "}"), })
 	  
 		public String crearUsuario(
@@ -122,10 +123,17 @@ public class UserController {
 				@RequestBody Usuarios u
 				) {
 		  
+		  
+ System.err.println(u.getUSU_ID() + " " + u.getUSU_NOMBRES() +" "  + u.getUSU_DIRECCION() +" "  + u.getUSU_TELEFONO());
+ System.err.println(u.getUSU_CORREO() +" "  + u.getUSU_NUMDOCUMENTO() + " " + u.getUSU_PASSWORD() +" "   + u.getUSU_TDOC_ID() +" "  + u.getUSU_ROL_ID() + " " + u.getUSU_ESTADO());
+	  
+		  
 		  String mensaje ="";
 			try {
 				UsuariosDao servicioUsuarios = new UsuariosDao();
-				Usuarios us = new Usuarios();
+				
+				
+				 Usuarios usu = new Usuarios();
 				
 				 Pattern pattern = Pattern
 	                     .compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
@@ -141,15 +149,15 @@ public class UserController {
 	             }
 
 	             
-	             System.out.println("viene del front " + u.getUSU_ID());
-		            Usuarios usu = new Usuarios();
+	            
+		           
 		    		usu.setUSU_ID(u.getUSU_ID());
 		    		usu.setUSU_NOMBRES(u.getUSU_NOMBRES());
 		    		
-		    		
+		    		System.out.println("viene del front " + validaEmail);
 		    		Usuarios users = servicioUsuarios.findByEmail(validaEmail);
 		    		
-		    		
+		    	
 		    		if (users != null) {
 		    			usu.setUSU_CORREO(validaEmail);
 		    		}else {
@@ -185,9 +193,18 @@ public class UserController {
 			        }
 				  
 		    		usu.setUSU_PASSWORD(validaPass);
+		    		usu.setUSU_DIRECCION(u.getUSU_DIRECCION());
+		    		usu.setUSU_TELEFONO(u.getUSU_TELEFONO());
+		    		usu.setUSU_NUMDOCUMENTO(u.getUSU_NUMDOCUMENTO());
+		    		usu.setUSU_TDOC_ID(u.getUSU_TDOC_ID());
+		    		usu.setUSU_ROL_ID(u.getUSU_ROL_ID());
+		    		usu.setUSU_ESTADO(u.getUSU_ESTADO());
 		    		
-			        servicioUsuarios.agregarUsuario(us);
-
+		    		System.err.println(usu.getUSU_ID() + " " + usu.getUSU_NOMBRES() +" "  + usu.getUSU_DIRECCION() +" "  + usu.getUSU_TELEFONO());
+		    		 System.err.println(usu.getUSU_CORREO() +" "  + usu.getUSU_NUMDOCUMENTO() + " " + usu.getUSU_PASSWORD() +" "   + usu.getUSU_TDOC_ID() +" "  + usu.getUSU_ROL_ID() + " " + usu.getUSU_ESTADO());
+		    			 
+			        servicioUsuarios.agregarUsuario(usu);
+			       
 			        mensaje = "{\"mensaje\":\"El registro fue ingresado De Manera Correcta\"}";
 			} catch (Exception e) {
 				log.error(ExceptionUtil.format(e));
@@ -225,7 +242,10 @@ public class UserController {
 		  String mensaje ="";
 			try {
 				UsuariosDao servicioUsuarios = new UsuariosDao();
-			
+				
+				
+				 Usuarios usu = new Usuarios();
+				
 				 Pattern pattern = Pattern
 	                     .compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 	                             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
@@ -236,44 +256,61 @@ public class UserController {
 	            	 validaEmail = u.getUSU_CORREO();
 	             } else {
 	            	 validaEmail = "{\"mensaje\":\"El email ingresado es inválido.\"}\";";
-	            	  throw new Exception(" El email ingresado es inválido. " + u.getUSU_CORREO());
+	            	 throw new Exception(" El email ingresado es inválido " + u.getUSU_CORREO());
 	             }
+
 	             
-	        	System.out.println("viene del front " + u.getUSU_ID());
-	        	   Usuarios usu = new Usuarios();
+	            
+		           
 		    		usu.setUSU_ID(u.getUSU_ID());
 		    		usu.setUSU_NOMBRES(u.getUSU_NOMBRES());
-	    		
-	    		
-	    		
-	    		// Contraseña de 4-8 caracteres que requiere números y letras de ambos casos
-			     String PASSWORD_REGEX =
-			    		"^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,16}$";
-			 
-			    // Contraseña de 4 a 32 caracteres que requiere al menos 3 de 4 (mayúsculas
-			    // y letras minúsculas, números y caracteres especiales) y como máximo
-			    // 2 caracteres consecutivos iguales.
-			    String COMPLEX_PASSWORD_REGEX =
-			            "^(?:(?=.*\\d)(?=.*[A-Z])(?=.*[a-z])|" +
-			            "(?=.*\\d)(?=.*[^A-Za-z0-9])(?=.*[a-z])|" +
-			            "(?=.*[^A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z])|" +
-			            "(?=.*\\d)(?=.*[A-Z])(?=.*[^A-Za-z0-9]))(?!.*(.)\\1{2,})" +
-			            "[A-Za-z0-9!~<>,;:_=?*+#.\"&§%°()\\|\\[\\]\\-\\$\\^\\@\\/]" +
-			            "{8,32}$";
-			 
-			  Pattern PASSWORD_PATTERN =
-			                                    Pattern.compile(COMPLEX_PASSWORD_REGEX);
-			  String validaPass ="";
-			  if (PASSWORD_PATTERN.matcher(u.getUSU_PASSWORD()).matches()) {
-				  validaPass = u.getUSU_PASSWORD();
-		        }
-		        else {
-		        	 validaPass = "{\"mensaje\":\"La contraseña es invalida .\"}\";";
-		        	 throw new Exception(" La contraseña es invalida ");
-		        }
-			  
-			  usu.setUSU_PASSWORD(validaPass);
-				
+		    		
+		    		System.out.println("viene del front " + validaEmail);
+		    		Usuarios users = servicioUsuarios.findByEmail(validaEmail);
+		    		
+		    		 System.out.println("viene del front " + users);
+		    		if (users != null) {
+		    			usu.setUSU_CORREO(validaEmail);
+		    		}else {
+		    		usu.setUSU_CORREO("");
+		    		}
+		    		
+		    		
+		    		// Contraseña de 4-8 caracteres que requiere números y letras de ambos casos
+				     String PASSWORD_REGEX =
+				    		"^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,16}$";
+				 
+				    // Contraseña de 4 a 32 caracteres que requiere al menos 3 de 4 (mayúsculas
+				    // y letras minúsculas, números y caracteres especiales) y como máximo
+				    // 2 caracteres consecutivos iguales.
+				    String COMPLEX_PASSWORD_REGEX =
+				            "^(?:(?=.*\\d)(?=.*[A-Z])(?=.*[a-z])|" +
+				            "(?=.*\\d)(?=.*[^A-Za-z0-9])(?=.*[a-z])|" +
+				            "(?=.*[^A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z])|" +
+				            "(?=.*\\d)(?=.*[A-Z])(?=.*[^A-Za-z0-9]))(?!.*(.)\\1{2,})" +
+				            "[A-Za-z0-9!~<>,;:_=?*+#.\"&§%°()\\|\\[\\]\\-\\$\\^\\@\\/]" +
+				            "{8,32}$";
+				 
+				  Pattern PASSWORD_PATTERN =
+				                                    Pattern.compile(COMPLEX_PASSWORD_REGEX);
+				  String validaPass ="";
+				  if (PASSWORD_PATTERN.matcher(u.getUSU_PASSWORD()).matches()) {
+					  validaPass = u.getUSU_PASSWORD();
+			        }
+			        else {
+			        	 validaPass = "{\"mensaje\":\"La contraseña es invalida .\"}\";";
+			        	 throw new Exception(" La contraseña es invalida " + u.getUSU_PASSWORD());
+			        			 
+			        }
+				  
+		    		usu.setUSU_PASSWORD(validaPass);
+		    		usu.setUSU_DIRECCION(u.getUSU_DIRECCION());
+		    		usu.setUSU_TELEFONO(u.getUSU_TELEFONO());
+		    		usu.setUSU_NUMDOCUMENTO(u.getUSU_NUMDOCUMENTO());
+		    		usu.setUSU_TDOC_ID(u.getUSU_TDOC_ID());
+		    		usu.setUSU_ROL_ID(u.getUSU_ROL_ID());
+		    		usu.setUSU_ESTADO(u.getUSU_ESTADO());
+		    		
 				       servicioUsuarios.actualizarUsuario(usu);
 
 				 mensaje = "{\"mensaje\":\"El registro fue actualizado De Manera Correcta\"}";

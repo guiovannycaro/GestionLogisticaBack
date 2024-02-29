@@ -31,6 +31,7 @@ public class UsuariosDao implements   UsuariosInterface{
 			us.setUSU_PASSWORD(resulSelect.getString("usu_password"));
 			us.setUSU_TDOC_ID(resulSelect.getInt("usu_tdoc_id"));
 			us.setUSU_ROL_ID(resulSelect.getInt("usu_rol_id"));
+			us.setUSU_ESTADO(resulSelect.getInt("usu_estado"));
 			System.out.println("usuario " + us.getUSU_ROL_ID());
 			list.add(us);
 		}
@@ -57,7 +58,7 @@ public class UsuariosDao implements   UsuariosInterface{
 			us.setUSU_PASSWORD(resulSelect.getString("usu_password"));
 			us.setUSU_TDOC_ID(resulSelect.getInt("usu_tdoc_id"));
 			us.setUSU_ROL_ID(resulSelect.getInt("usu_rol_id"));
-			
+			us.setUSU_ESTADO(resulSelect.getInt("usu_estado"));
 			list.add(us);
 		}
 		return list;
@@ -73,12 +74,13 @@ public class UsuariosDao implements   UsuariosInterface{
 	public String agregarUsuario(Usuarios usu) throws Exception {
 		String validaIngreso;
 		String sql = "insert into  usuarios (usu_nombres,usu_direccion,usu_telefono"
-				+ ",usu_correo,usu_numdocumento,usu_password,usu_tdoc_id,usu_rol_id) " + "values("
+				+ ",usu_correo,usu_numdocumento,usu_password,usu_tdoc_id,usu_rol_id,usu_estado) " + "values("
 						+ "'" + usu.getUSU_NOMBRES() + "','" + usu.getUSU_DIRECCION() + "','"
 				+ usu.getUSU_TELEFONO() + "'," + "'" + usu.getUSU_CORREO() + "'," + usu.getUSU_NUMDOCUMENTO() + ",'"
-				+ usu.getUSU_PASSWORD() + "',"+usu.getUSU_TDOC_ID()+","+usu.getUSU_ROL_ID()+")  ";
-		
+				+ usu.getUSU_PASSWORD() + "',"+usu.getUSU_TDOC_ID()+","+usu.getUSU_ROL_ID()+","+usu.getUSU_ESTADO()+")  ";
+		System.out.println("consulta " + sql);
 		boolean rpt = query.executeUpdateBd(sql);
+		System.out.println("repuesta " + rpt);
 		if (rpt = true) {
 			validaIngreso = "{\"codigo\":\"200\",\"mensaje\":\"Mensaje Informativo\",\"descripcion\":\"El registro fue ingresado De Manera Correcta\"}";
 		} else {
@@ -96,9 +98,10 @@ public class UsuariosDao implements   UsuariosInterface{
 				+ "usu_telefono = '" + usu.getUSU_TELEFONO() + "',"
 				+ "usu_correo = '" + usu.getUSU_CORREO() + "',"
 				+ "usu_numdocumento = '" + usu.getUSU_NUMDOCUMENTO() + "',"
-				+ "usu_password = '" + usu.getUSU_PASSWORD() + "' "
-				+ "usu_tdoc_id = '" + usu.getUSU_TDOC_ID() + "' "
-				+ "usu_rol_id = '" + usu.getUSU_ROL_ID() + "' "
+				+ "usu_password = '" + usu.getUSU_PASSWORD() + "', "
+				+ "usu_tdoc_id = '" + usu.getUSU_TDOC_ID() + "', "
+				+ "usu_rol_id = '" + usu.getUSU_ROL_ID() + "', "
+						+ "usu_estado = '" + usu.getUSU_ESTADO() + "', "
 				+ " WHERE usu_id = " + usu.getUSU_ID() + " ";
 		
 		boolean rpt = query.executeUpdateBd(sql);
@@ -129,7 +132,7 @@ public class UsuariosDao implements   UsuariosInterface{
 	@Override
 	public Usuarios findByEmail(String  valEmail) throws Exception {
 		ArrayList<Usuarios> list = new ArrayList<>();
-		String sql = "select * from usuarios where usu_correo = "+ valEmail +" ";
+		String sql = "select * from usuarios where usu_correo = '"+ valEmail +"' ";
 		resulSelect = query.executeSelectBd(sql);
 		Usuarios us = new Usuarios();
 		while (resulSelect.next()) {
@@ -143,7 +146,7 @@ public class UsuariosDao implements   UsuariosInterface{
 			us.setUSU_PASSWORD(resulSelect.getString("usu_password"));
 			us.setUSU_TDOC_ID(resulSelect.getInt("usu_tdoc_id"));
 			us.setUSU_ROL_ID(resulSelect.getInt("usu_rol_id"));
-			
+			us.setUSU_ESTADO(resulSelect.getInt("usu_estado"));
 			
 		}
 		return us;
