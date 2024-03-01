@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.gestion.rest.Interfaces.ClientesInterface;
 import com.gestion.rest.Model.Clientes;
+import com.gestion.rest.Model.Usuarios;
 import com.gestion.rest.util.executeQueryBD;
 
 public class ClientesDao implements ClientesInterface {
@@ -27,7 +28,7 @@ public class ClientesDao implements ClientesInterface {
 			cli.setCLI_DIRECCION(resulSelect.getString("cli_direccion"));
 			cli.setCLI_CIUDAD_ID(resulSelect.getInt("cli_ciudad"));
 			cli.setCLI_NOMBRES(resulSelect.getString("cli_nombres"));
-			cli.setCLI_ESTADO(resulSelect.getBoolean("cli_estado"));
+			cli.setCLI_ESTADO(resulSelect.getInt("cli_estado"));
 			list.add(cli);
 		}
 		return list;
@@ -35,8 +36,9 @@ public class ClientesDao implements ClientesInterface {
 
 	@Override
 	public Clientes devolverClienteById(int id) throws Exception {
-		ArrayList<Clientes> list = new ArrayList<>();
-		String sql = "select * from clientes where cli_id = '" + id + "' ";
+		
+		String sql = "select * from clientes where cli_id = " + id + " ";
+		System.err.println(sql);
 		resulSelect = query.executeSelectBd(sql);
 		Clientes cli = new Clientes();
 		while (resulSelect.next()) {
@@ -47,11 +49,32 @@ public class ClientesDao implements ClientesInterface {
 			cli.setCLI_CELULAR(resulSelect.getString("cli_celular"));
 			cli.setCLI_DIRECCION(resulSelect.getString("cli_direccion"));
 			cli.setCLI_CIUDAD_ID(resulSelect.getInt("cli_ciudad"));
-			cli.setCLI_ESTADO(resulSelect.getBoolean("cli_estado"));
+			cli.setCLI_ESTADO(resulSelect.getInt("cli_estado"));
 			
 		}
 		return cli;
 	}
+	
+	
+	public Clientes devolverClientesById(Integer id) throws Exception {
+	
+		String sql = "select * from clientes where cli_id = "+ id +" ";
+		resulSelect = query.executeSelectBd(sql);
+		Clientes cli = new Clientes();
+		while (resulSelect.next()) {
+			
+			cli.setCLI_ID(resulSelect.getInt("cli_id"));
+			cli.setCLI_NOMBRES(resulSelect.getString("cli_nombres"));
+			cli.setCLI_CORREO(resulSelect.getString("cli_correo"));
+			cli.setCLI_CELULAR(resulSelect.getString("cli_celular"));
+			cli.setCLI_DIRECCION(resulSelect.getString("cli_direccion"));
+			cli.setCLI_CIUDAD_ID(resulSelect.getInt("cli_ciudad"));
+			cli.setCLI_ESTADO(resulSelect.getInt("cli_estado"));
+			
+		}
+		return cli;
+	}
+
 
 	@Override
 	public Clientes buscarClientePorDato(Clientes datos) throws Exception {

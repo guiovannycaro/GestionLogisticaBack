@@ -13,11 +13,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gestion.rest.dao.ClientesDao;
+import com.gestion.rest.dao.UsuariosDao;
 import com.gestion.rest.Model.Clientes;
-
+import com.gestion.rest.Model.Usuarios;
 import com.gestion.rest.util.ExceptionUtil;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -26,7 +29,7 @@ import io.swagger.annotations.ApiResponses;
 import org.springframework.http.MediaType;
 
 @RestController
-@RequestMapping("/getion/clientes/CrudClientes")
+@RequestMapping("/getion/CrudClientes")
 @Api(value = "Servicio Clientes")
 public class ServicioWebClientes {
 
@@ -51,7 +54,7 @@ public class ServicioWebClientes {
 		}
 	}
 
-	@PostMapping(value = "/buscarClientesById", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/buscarClientesById", consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Consulta Cliente por id", response = Clientes.class, notes = "Obtiene todos Los Clientes por id ")
 	@ApiResponses({
 		@ApiResponse(code = 200, message = "La consulta se Ejecuto de manera correcta", response = Clientes.class),
@@ -60,19 +63,53 @@ public class ServicioWebClientes {
 		@ApiResponse(code = 403, message = "Acceso denegado", response = Clientes.class),
 		@ApiResponse(code = 401, message = "No existen Clientes Asociados a esa cedula", response = Clientes.class),
 		@ApiResponse(code = 404, message = "No existen Clientes Asociados a esa cedula", response = Clientes.class), })
+	
+	  @ApiImplicitParams({
+			@ApiImplicitParam(name = "Usuarios", required = true, paramType = "query", dataType = "Object", value = "Ojeto Usuarios", defaultValue = 
+					"{\r\n"
+				    	+ "\"\"id\":xxx\r\n"
+					+ "}"), })
 	public Clientes buscarClientesById(
-			@ApiParam(name = "cliid", value = "id cliente", required = true, example = "00000000")
-			@RequestParam(value = "clienteid") String idcliente) {
+			@ApiParam(name = "Clientes", value = "Recibe el objeto Clientes", required = true)
+	 @RequestParam Integer id) {
 		
 		Clientes c = null;
 		try {
 			ClientesDao servicioCliente = new ClientesDao();
-			return c = servicioCliente.devolverClienteById(Integer.parseInt(idcliente));
+			return c;
+			//return c = servicioCliente.devolverClienteById(id);
 		} catch (Exception e) {
 			log.error(ExceptionUtil.format(e));
 			return c;
 		}
 	}
+	
+	  @GetMapping(value = "/ListarClientesById", produces = MediaType.APPLICATION_JSON_VALUE)
+		 @ApiOperation(value = "Lista de Clientes por Id ", response = Usuarios.class, notes = "Crea un nuevo telefono")
+		@ApiResponses({ @ApiResponse(code = 200, message = "Se crea  de manera correcta", response = Clientes.class),
+			@ApiResponse(code = 400, message = "Bad Request.El Usuarios Ingresado Esta Mal Digitado(String)", response = Clientes.class),
+			@ApiResponse(code = 500, message = "Error del sistema inesperado", response = Clientes.class),
+			@ApiResponse(code = 403, message = "Acceso denegado", response = Clientes.class),
+			@ApiResponse(code = 401, message = "No existen Datos Asociados a Ese Usuarios", response = Clientes.class),
+			@ApiResponse(code = 404, message = "No existen Datos Asociados a Ese Usuarios", response = Clientes.class), })
+		  @ApiImplicitParams({
+				@ApiImplicitParam(name = "Clientes", required = true, paramType = "query", dataType = "Object", value = "Ojeto Usuarios", defaultValue = 
+						"{\r\n"
+					    	+ "\"\"id\":xxx\r\n"
+						+ "}"), })
+		public Clientes ListarClientesById(
+				 @ApiParam(name = "Clientes", value = "Recibe el objeto Usuarios", required = true)
+				 @RequestParam Integer id) {
+				Clientes u = null;
+			try {
+			
+				ClientesDao servicioClientes = new ClientesDao();
+				return u = servicioClientes.devolverClientesById(id);
+			} catch (Exception e) {
+				log.error(ExceptionUtil.format(e));
+				return u;
+			}
+		}
 
 	@PostMapping(value = "/crearClientes", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Consulta crear clientes", response = Clientes.class, notes = "crea un nuevo cliente ")
@@ -123,7 +160,7 @@ public class ServicioWebClientes {
 		}
 	}
 
-	@PostMapping(value = "/eliminarClientes")
+	@GetMapping(value = "/eliminarClientes")
 	@ApiOperation(value = "Consulta eliminar clientes", response = Clientes.class, notes = "elimina un cliente ")
 	@ApiResponses({
 		@ApiResponse(code = 200, message = "La consulta se Ejecuto de manera correcta", response = Clientes.class),
@@ -134,10 +171,10 @@ public class ServicioWebClientes {
 		@ApiResponse(code = 404, message = "No existen Clientes Asociados a esa cedula", response = Clientes.class), })
 	public String eliminarCliente(
 			@ApiParam(name = "cliid", value = "id cliente", required = true, example = "00000000") 
-			@RequestParam(value = "cliid") String cliid) {
+			@RequestParam(value = "id") Integer id) {
 		try {
 			ClientesDao servicioCliente = new ClientesDao();
-			return servicioCliente.eliminarCliente(Integer.parseInt(cliid));
+			return servicioCliente.eliminarCliente(id);
 		
 		} catch (Exception e) {
 			log.error(ExceptionUtil.format(e));

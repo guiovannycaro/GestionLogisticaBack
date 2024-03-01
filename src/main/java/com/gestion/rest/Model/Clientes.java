@@ -22,8 +22,8 @@ public class Clientes  implements Serializable {
 	@ApiModelProperty(value = "CLI_NOMBRES", required = true, dataType = "String", example = "000", position = 2)
 	String CLI_NOMBRES;
 
-	@ApiModelProperty(value = "CLI_ESTADO", required = true, dataType = "Boolean", example = "true", position = 7)
-	boolean CLI_ESTADO;
+	@ApiModelProperty(value = "CLI_ESTADO", required = true, dataType = "Integer", example = "true", position = 7)
+	Integer CLI_ESTADO;
 	
 
 	
@@ -33,7 +33,7 @@ public class Clientes  implements Serializable {
 
 
 	public Clientes(Integer cLI_ID, String cLI_CORREO, String cLI_CELULAR, String cLI_DIRECCION, Integer cLI_CIUDAD_ID,
-			String cLI_NOMBRES, boolean cLI_ESTADO) {
+			String cLI_NOMBRES, Integer cLI_ESTADO) {
 		CLI_ID = cLI_ID;
 		CLI_CORREO = cLI_CORREO;
 		CLI_CELULAR = cLI_CELULAR;
@@ -117,13 +117,13 @@ public class Clientes  implements Serializable {
 
 
 
-	public boolean getCLI_ESTADO() {
+	public Integer getCLI_ESTADO() {
 		return CLI_ESTADO;
 	}
 
 
 
-	public void setCLI_ESTADO(boolean cLI_ESTADO) {
+	public void setCLI_ESTADO(Integer cLI_ESTADO) {
 		CLI_ESTADO = cLI_ESTADO;
 	}
 
