@@ -8,7 +8,7 @@ public interface ClientesInterface {
 
 	List<Clientes> devolverListaClientes() throws Exception;
 
-	List<Clientes> devolverClienteById(int id)  throws Exception;
+	public Clientes devolverClienteById(int id) throws Exception ;
 
 	Clientes buscarClientePorDato(Clientes datos)  throws Exception;
 	 

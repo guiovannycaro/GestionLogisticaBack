@@ -60,15 +60,17 @@ public class ServicioWebClientes {
 		@ApiResponse(code = 403, message = "Acceso denegado", response = Clientes.class),
 		@ApiResponse(code = 401, message = "No existen Clientes Asociados a esa cedula", response = Clientes.class),
 		@ApiResponse(code = 404, message = "No existen Clientes Asociados a esa cedula", response = Clientes.class), })
-	public List<Clientes> buscarClientesById(
+	public Clientes buscarClientesById(
 			@ApiParam(name = "cliid", value = "id cliente", required = true, example = "00000000")
 			@RequestParam(value = "clienteid") String idcliente) {
+		
+		Clientes c = null;
 		try {
 			ClientesDao servicioCliente = new ClientesDao();
-			return servicioCliente.devolverClienteById(Integer.parseInt(idcliente));
+			return c = servicioCliente.devolverClienteById(Integer.parseInt(idcliente));
 		} catch (Exception e) {
 			log.error(ExceptionUtil.format(e));
-			return Collections.emptyList();
+			return c;
 		}
 	}
 
@@ -121,7 +123,7 @@ public class ServicioWebClientes {
 		}
 	}
 
-	@PostMapping(value = "/eliminarCliente")
+	@PostMapping(value = "/eliminarClientes")
 	@ApiOperation(value = "Consulta eliminar clientes", response = Clientes.class, notes = "elimina un cliente ")
 	@ApiResponses({
 		@ApiResponse(code = 200, message = "La consulta se Ejecuto de manera correcta", response = Clientes.class),

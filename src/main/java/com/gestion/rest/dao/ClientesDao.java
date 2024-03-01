@@ -34,12 +34,13 @@ public class ClientesDao implements ClientesInterface {
 	}
 
 	@Override
-	public List<Clientes> devolverClienteById(int id) throws Exception {
+	public Clientes devolverClienteById(int id) throws Exception {
 		ArrayList<Clientes> list = new ArrayList<>();
 		String sql = "select * from clientes where cli_id = '" + id + "' ";
 		resulSelect = query.executeSelectBd(sql);
+		Clientes cli = new Clientes();
 		while (resulSelect.next()) {
-			Clientes cli = new Clientes();
+		
 			cli.setCLI_ID(resulSelect.getInt("cli_id"));
 			cli.setCLI_NOMBRES(resulSelect.getString("cli_nombres"));
 			cli.setCLI_CORREO(resulSelect.getString("cli_correo"));
@@ -47,9 +48,9 @@ public class ClientesDao implements ClientesInterface {
 			cli.setCLI_DIRECCION(resulSelect.getString("cli_direccion"));
 			cli.setCLI_CIUDAD_ID(resulSelect.getInt("cli_ciudad"));
 			cli.setCLI_ESTADO(resulSelect.getBoolean("cli_estado"));
-			list.add(cli);
+			
 		}
-		return list;
+		return cli;
 	}
 
 	@Override
